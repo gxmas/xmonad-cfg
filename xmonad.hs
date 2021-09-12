@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import XMonad
+import qualified XMonad.StackSet as W
 
 -- Hooks
 import XMonad.Hooks.DynamicLog
@@ -109,11 +110,13 @@ myManageHook =
         manageDocks
     <+> namedScratchpadManageHook myScratchpads
     <+> composeAll
-            [ className =? "mpv"      --> doFloat
+            [ className =? "mpv"      --> doRectFloat mpvRect
             , className =? "Xmessage" --> doCenterFloat
             , isDialog                --> doCenterFloat
             , isFullscreen            --> doFullFloat
             ]
+  where
+    mpvRect = W.RationalRect (1/4) (1/4) (1/2) (1/2)
 
 --------------------------------------------------------------------------
 --  LogHook
