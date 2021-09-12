@@ -22,6 +22,7 @@ import XMonad.Actions.FloatKeys
 -- Prompt
 import XMonad.Prompt
 import XMonad.Prompt.AppLauncher
+import XMonad.Prompt.Man
 
 -- Util
 import XMonad.Util.Cursor
@@ -224,6 +225,7 @@ myKeys =
     , ("M-r c",                    launchWithPrompt "code")
     , ("M-r s",                    launchWithPrompt "librewolf --kiosk --search")
     , ("M-r v",                    launchWithPrompt "mpv")
+    , ("M-r m",                    manPrompt myXPConfig)
 
       -- Scratchpads
     , ("M-C-<Return>",             namedScratchpadAction myScratchpads "term")
