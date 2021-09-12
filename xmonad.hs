@@ -33,8 +33,6 @@ import XMonad.Util.SpawnOnce
 import Data.List (intercalate)
 import Data.Monoid (All)
 import Data.Ratio ((%))
-import DBus
-import DBus.Client
 import GHC.IO.Handle (Handle)
 
 import Util
@@ -192,7 +190,7 @@ searchWebPrompt = prompt "Search Web: "
 --------------------------------------------------------------------------
 myKeys :: [(String, X ())]
 myKeys =
-    [ ("M-b",                      sendMessage ToggleStruts >> sendXmobar xmobarToggle)
+    [ ("M-b",                      sendMessage ToggleStruts >> sendXMobar xmobarToggle)
     , ("M-S-h",                    sendMessage MirrorExpand)
     , ("M-S-l",                    sendMessage MirrorShrink)
 
@@ -226,19 +224,3 @@ myKeys =
     , ("<XF86MonBrightnessUp>",    spawn "xbacklight -inc 10")
     , ("<XF86MonBrightnessDown>",  spawn "xbacklight -dec 10")
     ]
-
---------------------------------------------------------------------------
---  Utility functions
---------------------------------------------------------------------------
-sendXmobar :: MethodCall -> X ()
-sendXmobar mc = catchIO $ connectSession >>= \c -> callNoReply c mc
-
-xmobarToggle :: MethodCall
-xmobarToggle = xmobarMethodCall (toVariant ("Toggle 0" :: String))
-
-xmobarMethodCall :: Variant -> MethodCall
-xmobarMethodCall v =
-    let mc = methodCall "/org/Xmobar/Control" "org.Xmobar.Control" "SendSignal"
-    in mc { methodCallDestination = Just "org.Xmobar.Control"
-          , methodCallBody = [v]
-          }
