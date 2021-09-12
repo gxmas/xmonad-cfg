@@ -19,6 +19,10 @@ import XMonad.Layout.Spacing
 -- Actions
 import XMonad.Actions.FloatKeys
 
+-- Prompt
+import XMonad.Prompt
+import XMonad.Prompt.AppLauncher
+
 -- Util
 import XMonad.Util.Cursor
 import XMonad.Util.EZConfig
@@ -33,6 +37,7 @@ import DBus
 import DBus.Client
 import GHC.IO.Handle (Handle)
 
+import Util
 
 main :: IO ()
 main = do
@@ -155,6 +160,34 @@ myScratchpads =
     nspTermHook  = doCenterFloat
 
 --------------------------------------------------------------------------
+-- Prompt
+--------------------------------------------------------------------------
+myXPConfig :: XPConfig
+myXPConfig = def
+    { font              = "xft:Fira Code:Bold:pixelsize=24"
+    , borderColor       = "#1ba6fa"
+    , promptBorderWidth = 2
+    , position          = CenteredAt { xpCenterY = 0.2, xpWidth = 0.50 }
+    , alwaysHighlight   = True
+    , height            = 75
+    }
+
+prompt :: String -> XPConfig
+prompt p = myXPConfig { defaultPrompter = \_ -> p }
+
+promptWithArg :: String -> String ->XPConfig
+promptWithArg p a = myXPConfig
+    { defaultText = a
+    , defaultPrompter = \_ -> p
+    }
+
+vscodePrompt :: XPConfig
+vscodePrompt = promptWithArg "VS Code: " "~/Projects/"
+
+searchWebPrompt :: XPConfig
+searchWebPrompt = prompt "Search Web: "
+
+--------------------------------------------------------------------------
 --  Key Bindings
 --------------------------------------------------------------------------
 myKeys :: [(String, X ())]
@@ -176,7 +209,12 @@ myKeys =
     , ("M-s",                      withFocused (keysResizeWindow (10,10) (1,1)))
     , ("M-S-d",                    withFocused (keysResizeWindow (-10,-10) (3840,2160)))
     , ("M-S-s",                    withFocused (keysResizeWindow (10,10) (3840,2160)))
+
     , ("M-a",                      withFocused (keysResizeWindow (1920,1080) (1%2,1%2)))
+
+      -- Apps
+    , ("M-r c",                    launchApp vscodePrompt "code")
+    , ("M-r s",                    launchApp' searchWebPrompt "librewolf --search" quote)
 
       -- Scratchpads
     , ("M-C-<Return>",             namedScratchpadAction myScratchpads "term")
