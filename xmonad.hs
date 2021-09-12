@@ -212,7 +212,7 @@ myKeys =
 
       -- Apps
     , ("M-r c",                    launchApp vscodePrompt "code")
-    , ("M-r s",                    launchApp' searchWebPrompt "librewolf --search" quote)
+    , ("M-r s",                    launchApp' searchWebPrompt "librewolf --kiosk --search" quote)
 
       -- Scratchpads
     , ("M-C-<Return>",             namedScratchpadAction myScratchpads "term")
