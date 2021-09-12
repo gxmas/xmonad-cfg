@@ -147,11 +147,11 @@ myScratchpads =
   where
     nspTermCmd   = intercalate " "
         [ myTerminal
-        , "--class=ns-term,ns-term"
+        , "--class=xmonad-ns-alacritty,xmonad-ns-alacritty"
         , "--option=window.dimensions.columns=125"
         , "--option=window.dimensions.lines=50"
         ]
-    nspTermQuery = className =? "ns-term"
+    nspTermQuery = className =? "xmonad-ns-alacritty"
     nspTermHook  = doCenterFloat
 
 --------------------------------------------------------------------------
