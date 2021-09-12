@@ -211,6 +211,7 @@ myKeys =
     , ("M-a",                      withFocused (keysResizeWindow (1920,1080) (1%2,1%2)))
 
       -- Apps
+    , ("M-r b",                    spawn "librewolf")
     , ("M-r c",                    launchApp vscodePrompt "code")
     , ("M-r s",                    launchApp' searchWebPrompt "librewolf --kiosk --search" quote)
 
