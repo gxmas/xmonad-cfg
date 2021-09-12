@@ -179,11 +179,20 @@ promptWithArg p a = myXPConfig
     , defaultPrompter = \_ -> p
     }
 
-vscodePrompt :: XPConfig
-vscodePrompt = promptWithArg "VS Code: " "~/Projects/"
+launchWithNoPrompt :: Application -> X ()
+launchWithNoPrompt = spawn
 
-searchWebPrompt :: XPConfig
-searchWebPrompt = prompt "Search Web: "
+launchWithPrompt :: Application -> X ()
+launchWithPrompt app =
+  case lookup app prompts of
+      Just (p, c)  -> launchApp' p app c
+      Nothing      -> pure ()
+  where
+    prompts =
+        [ ("librewolf --kiosk --search", ((prompt "Search Web: "), quote))
+        , ("code",                       ((promptWithArg "VS Code: " "~/Projects/"), id))
+        , ("mpv",                        ((promptWithArg "mpv: " "~/Videos/"), id))
+        ]
 
 --------------------------------------------------------------------------
 --  Key Bindings
@@ -211,9 +220,10 @@ myKeys =
     , ("M-a",                      withFocused (keysResizeWindow (1920,1080) (1%2,1%2)))
 
       -- Apps
-    , ("M-r b",                    spawn "librewolf")
-    , ("M-r c",                    launchApp vscodePrompt "code")
-    , ("M-r s",                    launchApp' searchWebPrompt "librewolf --kiosk --search" quote)
+    , ("M-r b",                    launchWithNoPrompt "librewolf")
+    , ("M-r c",                    launchWithPrompt "code")
+    , ("M-r s",                    launchWithPrompt "librewolf --kiosk --search")
+    , ("M-r v",                    launchWithPrompt "mpv")
 
       -- Scratchpads
     , ("M-C-<Return>",             namedScratchpadAction myScratchpads "term")
