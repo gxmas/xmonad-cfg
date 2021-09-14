@@ -172,6 +172,7 @@ myXPConfig = def
     , position          = CenteredAt { xpCenterY = 0.2, xpWidth = 0.50 }
     , alwaysHighlight   = True
     , height            = 75
+    , promptKeymap      = vimLikeXPKeymap
     }
 
 prompt :: String -> XPConfig
