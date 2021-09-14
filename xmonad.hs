@@ -97,7 +97,7 @@ myLayoutHook = smartBorders
              $ tall ||| Mirror tall ||| Full
 
 tall = renamed [Replace "Tall"]
-     $ spacingRaw True (sqbdr 4) True (sqbdr 12) True
+     $ spacingRaw True (sqbdr 2) True (sqbdr 4) True
      $ ResizableTall 1 (3/100) (1/2) []
   where
     sqbdr n = Border n n n n
@@ -166,12 +166,12 @@ myScratchpads =
 --------------------------------------------------------------------------
 myXPConfig :: XPConfig
 myXPConfig = def
-    { font              = "xft:Fira Code:Bold:pixelsize=24"
+    { font              = "xft:Fira Code:Bold:pixelsize=12"
     , borderColor       = "#1ba6fa"
     , promptBorderWidth = 2
     , position          = CenteredAt { xpCenterY = 0.2, xpWidth = 0.50 }
     , alwaysHighlight   = True
-    , height            = 75
+    , height            = 30
     , promptKeymap      = vimLikeXPKeymap
     }
 
