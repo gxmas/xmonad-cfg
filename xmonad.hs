@@ -75,7 +75,7 @@ myFocusedBorderColor :: String
 myFocusedBorderColor =  "#ebebeb"
 
 myWallpaper :: String
-myWallpaper = "~/.local/share/wallpapers/weiwei-pink.jpg"
+myWallpaper = "~/.local/share/wallpapers/weiwei-blue.jpg"
 
 --------------------------------------------------------------------------
 --  StartupHook
