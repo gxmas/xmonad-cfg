@@ -195,7 +195,7 @@ launchWithPrompt app =
     prompts =
         [ ("librewolf --kiosk --search", ((prompt "Search Web: "), quote))
         , ("code",                       ((promptWithArg "VS Code: " "~/Projects/"), id))
-        , ("mpv",                        ((promptWithArg "mpv: " "~/Videos/"), id))
+        , ("mpv",                        ((promptWithArg "mpv: " "~/Videos/Films/"), id))
         ]
 
 --------------------------------------------------------------------------
