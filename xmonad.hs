@@ -42,19 +42,7 @@ import Util
 main :: IO ()
 main = do
     xmproc <- spawnPipe "xmobar"
-
-    xmonad $ def
-        { modMask            = myModMask
-        , terminal           = myTerminal
-        , borderWidth        = myBorderWidth
-        , normalBorderColor  = myNormalBorderColor
-        , focusedBorderColor = myFocusedBorderColor
-        , startupHook        = myStartupHook
-        , layoutHook         = myLayoutHook
-        , manageHook         = myManageHook
-        , logHook            = myLogHook xmproc
-        , handleEventHook    = myHandleEventHook
-        } `additionalKeysP` myKeys
+    xmonad $ myConfig xmproc `additionalKeysP` myKeys
 
 --------------------------------------------------------------------------
 --  Variables
@@ -78,13 +66,28 @@ myWallpaper :: String
 myWallpaper = "~/.local/share/wallpapers/weiwei-pink.jpg"
 
 --------------------------------------------------------------------------
+--  Configuration
+--------------------------------------------------------------------------
+-- myConfig :: Handle -> XConfig a
+myConfig xmproc = ewmh $ docks $ def
+    { modMask            = myModMask
+    , terminal           = myTerminal
+    , borderWidth        = myBorderWidth
+    , normalBorderColor  = myNormalBorderColor
+    , focusedBorderColor = myFocusedBorderColor
+    , startupHook        = myStartupHook
+    , layoutHook         = myLayoutHook
+    , manageHook         = myManageHook
+    , logHook            = myLogHook xmproc
+    -- , handleEventHook    = myHandleEventHook
+    }
+
+--------------------------------------------------------------------------
 --  StartupHook
 --------------------------------------------------------------------------
 myStartupHook :: X ()
 myStartupHook =
-        docksStartupHook
-    <+> ewmhDesktopsStartup
-    <+> setDefaultCursor xC_left_ptr
+        setDefaultCursor xC_left_ptr
     <+> spawnOnce ("xwallpaper --zoom " ++ myWallpaper)
     <+> spawnOnce "picom -b"
     <+> setWMName "LG3D"
@@ -134,16 +137,15 @@ myLogHook h =
             , ppUrgent          = xmobarColor "#c45500" "" . wrap "!" "!"
             , ppOrder           = \(ws:l:t:ex) -> [ws,l] ++ ex ++ [t]
             }
-    <+> ewmhDesktopsLogHook
 
 --------------------------------------------------------------------------
 --  HandleEventHook
 --------------------------------------------------------------------------
-myHandleEventHook :: Event -> X All
-myHandleEventHook =
-        docksEventHook
-    <+> ewmhDesktopsEventHook
-    <+> fullscreenEventHook
+-- myHandleEventHook :: Event -> X All
+-- myHandleEventHook =
+--         docks
+--     <+> ewmh
+--     <+> ewmhFullscreen
 
 --------------------------------------------------------------------------
 --  NamedScratchpads
@@ -196,7 +198,7 @@ launchWithPrompt app =
     prompts =
         [ ("librewolf --kiosk --search", ((prompt "Search Web: "), quote))
         , ("code",                       ((promptWithArg "VS Code: " "~/Projects/"), id))
-        , ("mpv",                        ((promptWithArg "mpv: " "~/Videos/Films/"), id))
+        , ("mpv",                        ((promptWithArg "mpv: " "~/Videos/Films/"), quote))
         ]
 
 --------------------------------------------------------------------------
